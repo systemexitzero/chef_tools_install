@@ -79,7 +79,10 @@ fi
 
 # Get sudo password at the beginning
 echo "Sudo is required to run this script"
-sudo ls &> /dev/null
+if ! sudo ls &> /dev/null; then
+    echo "Could not elevate to super user. Aborting" 1>&2
+    exit 1
+fi
 
 if [[ "$unamestr" == "Linux" ]]; then
   platform='linux'
