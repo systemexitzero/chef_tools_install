@@ -109,7 +109,9 @@ if [[ "$unamestr" == "Linux" ]]; then
         chef_dk_avail=true
         ;;
       "14.04")
-        version_name='raring'
+        version="12.04"  # spoof precise version to download chefdk
+        version_name='precise'  # spoof precise name to download virtualbox
+        chef_dk_avail=true
         ;;
       *)
         echo "Version name not found"
