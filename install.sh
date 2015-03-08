@@ -9,7 +9,7 @@ VAGRANT_VER="1.7.2"
 CHEFDK_BASE_URL="https://opscode-omnibus-packages.s3.amazonaws.com"
 CHEFDK_VER="0.4.0"
 
-platform='unkown'
+platform='unknown'
 unamestr=`uname`
 
 install_vbox=true
@@ -49,7 +49,7 @@ done
 if [ "$install_vagrant" == true ]; then
   if [ -a "/usr/bin/vagrant" ]; then
     vagrant_installed_version=$(vagrant version | grep Installed | grep -o "[0-9].*")
-    if [ "$VAGRANT_VER" == $vagrant_installed_version ]; then
+    if [ "$VAGRANT_VER" == "$vagrant_installed_version" ]; then
       echo -e "Vagrant already exists and is correct version... \tskipping"
       install_vagrant=false
     fi
@@ -130,7 +130,7 @@ if [[ "$unamestr" == "Linux" ]]; then
       if [ "$chef_dk_avail" == true ]; then
         echo "Installing ChefDK..."
         chefdk_pkg="chefdk_${CHEFDK_VER}-1_amd64.deb"
-        curl -L ${CHEFDK_BASE_URL}/ubuntu/${version}/x86_64/${chefdk_pkg} > /tmp/${chefdk_pkg}
+        curl -L "${CHEFDK_BASE_URL}/ubuntu/${version}/x86_64/${chefdk_pkg}" > /tmp/${chefdk_pkg}
         sudo dpkg -i /tmp/${chefdk_pkg}
       else
         echo "Oops no ChefDK package currently avilable for this version"
@@ -146,8 +146,8 @@ if [[ "$unamestr" == "Linux" ]]; then
       else
         virtualbox_pkg="VirtualBox-4.3-${vbox_ver}_fedora18-1.x86_64.rpm"
       fi
-      curl -L ${VIRTUALBOX_BASE_URL}/${virtualbox_pkg} > /tmp/${virtualbox_pkg}
-      sudo yum install /tmp/${virtualbox_pkg} -y
+      curl -L "${VIRTUALBOX_BASE_URL}/${virtualbox_pkg}" > "/tmp/${virtualbox_pkg}"
+      sudo yum install "/tmp/${virtualbox_pkg}" -y
     fi
 
     if [ "$install_vagrant" == true ]; then
@@ -198,10 +198,10 @@ fi
 
 if [ "$install_vagrant" == true ]; then
   echo "Installing vagrant plugins"
-  if [ -z $(vagrant plugin list | grep omnibus) ]; then
+  if ! vagrant plugin list | grep -q omnibus; then
     vagrant plugin install vagrant-omnibus
   fi
-  if [ -z $(vagrant plugin list | grep vagrant-berkshelf) ]; then
+  if ! vagrant plugin list | grep -q vagrant-berkshelf; then
     vagrant plugin install vagrant-berkshelf
   fi
 fi
